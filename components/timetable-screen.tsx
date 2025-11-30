@@ -283,24 +283,24 @@ export default function TimetableScreen() {
     switch (type) {
       case "lab":
         return {
-          bg: "bg-gradient-to-r from-[#3b82f6]/30 to-[#1e40af]/20",
-          border: "border-[#3b82f6]/40",
-          text: "text-[#3b82f6]",
-          badge: "bg-[#3b82f6]/20 text-[#3b82f6] border-[#3b82f6]/30",
+          bg: "bg-gradient-to-r from-[#0099FF]/30 to-[#0099FF]/20",
+          border: "border-[#0099FF]/40",
+          text: "text-[#0099FF]",
+          badge: "bg-[#0099FF]/20 text-[#0099FF] border-[#0099FF]/30",
         };
       case "tutorial":
         return {
-          bg: "bg-gradient-to-r from-[#f59e0b]/30 to-[#d97706]/20",
-          border: "border-[#f59e0b]/40",
-          text: "text-[#f59e0b]",
-          badge: "bg-[#f59e0b]/20 text-[#f59e0b] border-[#f59e0b]/30",
+          bg: "bg-gradient-to-r from-[#FF9900]/30 to-[#FF9900]/20",
+          border: "border-[#FF9900]/40",
+          text: "text-[#FF9900]",
+          badge: "bg-[#FF9900]/20 text-[#FF9900] border-[#FF9900]/30",
         };
       default: // lecture
         return {
-          bg: "bg-gradient-to-r from-green-500/30 to-green-600/20",
-          border: "border-green-500/40",
-          text: "text-green-400",
-          badge: "bg-green-500/20 text-green-400 border-green-500/30",
+          bg: "bg-gradient-to-r from-[#B166FF]/30 to-[#B166FF]/20",
+          border: "border-[#B166FF]/40",
+          text: "text-[#B166FF]",
+          badge: "bg-[#B166FF]/20 text-[#B166FF] border-[#B166FF]/30",
         };
     }
   };
@@ -338,10 +338,10 @@ export default function TimetableScreen() {
 
   if (isLoading) {
     return (
-      <div className="h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] text-white overflow-hidden flex items-center justify-center">
+      <div className="h-screen bg-gradient-to-br from-[#080808] via-[#0099FF] to-[#0099FF] text-white overflow-hidden flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#f59e0b] mx-auto mb-4"></div>
-          <h2 className="text-2xl font-bold text-[#f59e0b] mb-2">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#FF9900] mx-auto mb-4"></div>
+          <h2 className="text-2xl font-bold text-[#FF9900] mb-2">
             Loading Timetable
           </h2>
           <p className="text-white/80">Fetching latest schedule data...</p>
@@ -353,10 +353,10 @@ export default function TimetableScreen() {
   // If no active halls, show a message
   if (activeHalls.length === 0) {
     return (
-      <div className="h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] text-white overflow-hidden flex items-center justify-center">
+      <div className="h-screen bg-gradient-to-br from-[#080808] via-[#0099FF] to-[#0099FF] text-white overflow-hidden flex items-center justify-center">
         <div className="text-center">
           <Wifi className="w-16 h-16 mx-auto mb-6 opacity-50" />
-          <h2 className="text-3xl font-bold text-[#f59e0b] mb-4">
+          <h2 className="text-3xl font-bold text-[#FF9900] mb-4">
             No Classes Today
           </h2>
           <p className="text-xl text-white/80">
@@ -369,12 +369,12 @@ export default function TimetableScreen() {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] text-white overflow-hidden relative">
+    <div className="h-screen bg-gradient-to-br from-[#080808] via-[#0099FF] to-[#0099FF] text-white overflow-hidden relative">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-[#f59e0b]/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-20 left-20 w-72 h-72 bg-[#FF9900]/5 rounded-full blur-3xl animate-pulse"></div>
         <div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-[#3b82f6]/10 rounded-full blur-3xl animate-pulse"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-[#0099FF]/10 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "2s" }}
         ></div>
       </div>
@@ -384,11 +384,11 @@ export default function TimetableScreen() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#f59e0b] to-[#d97706] rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#FF9900] to-[#FF9900] rounded-xl flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-[#f59e0b] to-[#fbbf24] bg-clip-text text-transparent">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-[#FF9900] to-[#FF9900] bg-clip-text text-transparent">
                   Class Schedule
                 </h1>
                 <p className="text-lg text-white/70 flex items-center gap-2">

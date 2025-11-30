@@ -4,58 +4,60 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* TV Display Optimized Light Mode - High Contrast for Distance Viewing */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 5%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 8%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --popover-foreground: 0 0% 8%;
+    --primary: 210 100% 35%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 280 85% 45%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 35%;
+    --accent: 30 100% 50%;
+    --accent-foreground: 0 0% 10%;
+    --destructive: 0 100% 45%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 88%;
+    --input: 0 0% 95%;
+    --ring: 210 100% 35%;
+    --chart-1: 210 100% 45%;
+    --chart-2: 280 85% 55%;
+    --chart-3: 30 100% 55%;
+    --chart-4: 120 80% 45%;
+    --chart-5: 0 100% 50%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    /* TV Display Optimized Dark Mode - High Contrast OLED-Friendly */
+    --background: 0 0% 3%;
+    --foreground: 0 0% 96%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 210 100% 60%;
+    --primary-foreground: 0 0% 3%;
+    --secondary: 280 85% 65%;
+    --secondary-foreground: 0 0% 3%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 75%;
+    --accent: 30 100% 60%;
+    --accent-foreground: 0 0% 3%;
+    --destructive: 0 100% 55%;
+    --destructive-foreground: 0 0% 3%;
+    --border: 0 0% 18%;
+    --input: 0 0% 15%;
+    --ring: 210 100% 60%;
+    --chart-1: 210 100% 55%;
+    --chart-2: 280 85% 65%;
+    --chart-3: 30 100% 60%;
+    --chart-4: 120 80% 55%;
+    --chart-5: 0 100% 60%;
   }
 }
 
@@ -65,35 +67,47 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, sans-serif;
   }
-  
-  /* Responsive text scaling */
+
+  /* Responsive text scaling - Optimized for TV Viewing from Distance */
   html {
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
   }
-  
+
   @media (max-width: 768px) {
     html {
       font-size: 14px;
     }
   }
-  
+
   @media (max-width: 480px) {
     html {
       font-size: 12px;
     }
   }
-  
+
   @media (min-width: 1920px) {
     html {
-      font-size: 18px;
+      font-size: 20px;
+      letter-spacing: 0.4px;
     }
   }
-  
+
   @media (min-width: 2560px) {
     html {
-      font-size: 20px;
+      font-size: 24px;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  @media (min-width: 3840px) {
+    html {
+      font-size: 32px;
+      letter-spacing: 0.6px;
     }
   }
 }
@@ -157,7 +171,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
+
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -171,105 +185,327 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
+
   .line-clamp-4 {
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
+
   /* Responsive spacing utilities */
   .responsive-padding {
     @apply p-2 sm:p-4 md:p-6 lg:p-8;
   }
-  
+
   .responsive-margin {
     @apply m-2 sm:m-4 md:m-6 lg:m-8;
   }
-  
+
   /* Responsive text utilities */
   .responsive-text-xs {
     @apply text-xs sm:text-sm md:text-base;
   }
-  
+
   .responsive-text-sm {
     @apply text-sm sm:text-base md:text-lg;
   }
-  
+
   .responsive-text-base {
     @apply text-base sm:text-lg md:text-xl;
   }
-  
+
   .responsive-text-lg {
     @apply text-lg sm:text-xl md:text-2xl;
   }
-  
+
   .responsive-text-xl {
     @apply text-xl sm:text-2xl md:text-3xl;
   }
-  
+
   .responsive-text-2xl {
     @apply text-2xl sm:text-3xl md:text-4xl;
   }
-  
+
   .responsive-text-3xl {
     @apply text-3xl sm:text-4xl md:text-5xl;
   }
-  
+
   /* Responsive grid utilities */
   .responsive-grid-1 {
     @apply grid-cols-1;
   }
-  
+
   .responsive-grid-2 {
     @apply grid-cols-1 sm:grid-cols-2;
   }
-  
+
   .responsive-grid-3 {
     @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
   }
-  
+
   .responsive-grid-4 {
     @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
   }
-  
+
   /* Responsive flex utilities */
   .responsive-flex-col {
     @apply flex-col sm:flex-row;
   }
-  
+
   .responsive-flex-row {
     @apply flex-row;
   }
-  
+
   /* Hide/show utilities for different screen sizes */
   .mobile-only {
     @apply block sm:hidden;
   }
-  
+
   .tablet-up {
     @apply hidden sm:block;
   }
-  
+
   .desktop-only {
     @apply hidden lg:block;
   }
-  
+
   /* Responsive container utilities */
   .responsive-container {
     @apply w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-4xl mx-auto;
   }
-  
+
   /* Touch-friendly utilities */
   .touch-target {
     @apply min-h-[44px] min-w-[44px];
   }
-  
+
   /* Responsive height utilities */
   .responsive-height-screen {
     @apply h-screen;
     min-height: 100vh;
     min-height: 100dvh; /* Dynamic viewport height for mobile */
   }
+}
+
+/* TV Display Optimization Styles */
+
+/* Enhanced text rendering for distance viewing */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* TV-friendly button styles with stronger contrast */
+button,
+[role="button"] {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Enhanced contrast for interactive elements */
+.dark button,
+.dark [role="button"] {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* TV Text Size Scaling - Heading Hierarchy */
+h1 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: clamp(1.5rem, 4.5vw, 2.5rem);
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+h4 {
+  font-size: clamp(1.25rem, 3.5vw, 2rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+h5 {
+  font-size: clamp(1.1rem, 3vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+h6 {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* Paragraph text scaling for TV */
+p {
+  font-size: clamp(0.95rem, 2.5vw, 1.5rem);
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+}
+
+/* Small text - still readable from distance */
+small {
+  font-size: clamp(0.85rem, 2vw, 1.25rem);
+  line-height: 1.5;
+}
+
+/* Label and form text */
+label {
+  font-size: clamp(0.95rem, 2.3vw, 1.4rem);
+  font-weight: 550;
+  letter-spacing: 0.2px;
+}
+
+/* Card styling with enhanced contrast */
+.dark .shadow-lg {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.8);
+}
+
+/* Enhanced focus states for accessibility from distance */
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid;
+  outline-offset: 2px;
+}
+
+/* High contrast borders */
+.dark .border {
+  border-color: hsl(var(--border)) !important;
+}
+
+/* Improve scrollbar visibility */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 8px;
+  border: 3px solid hsl(var(--background));
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--secondary));
+}
+
+/* Icon styling with better visibility */
+svg {
+  font-weight: 600;
+}
+
+/* Link styling - high contrast */
+a {
+  color: hsl(var(--primary));
+  font-weight: 550;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+a:hover {
+  color: hsl(var(--secondary));
+}
+
+.dark a {
+  color: hsl(var(--primary));
+}
+
+.dark a:hover {
+  color: hsl(var(--secondary));
+}
+
+/* Table text sizing */
+table {
+  font-size: clamp(0.9rem, 2.2vw, 1.35rem);
+}
+
+table th {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Code blocks - improved readability */
+code,
+pre {
+  font-size: clamp(0.85rem, 2vw, 1.25rem);
+  font-family: "Courier New", monospace;
+}
+
+/* Badge/Tag styling for better visibility */
+.badge,
+[role="status"] {
+  font-size: clamp(0.8rem, 1.8vw, 1.1rem);
+  font-weight: 600;
+  padding: clamp(0.4rem, 1vw, 0.75rem) clamp(0.6rem, 1.5vw, 1rem);
+}
+
+/* Animation improvements - subtle, smooth transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Remove transitions for prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 8K Display Support */
+@media (min-width: 7680px) {
+  html {
+    font-size: 48px;
+  }
+
+  h1 {
+    font-size: 6rem;
+  }
+  h2 {
+    font-size: 4.5rem;
+  }
+  h3 {
+    font-size: 3.5rem;
+  }
+  p {
+    font-size: 1.8rem;
+  }
+}
+
+/* Enhanced color contrast for text on backgrounds */
+.dark {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Ensure strong text contrast ratios */
+.text-muted {
+  color: hsl(var(--muted-foreground));
+}
+
+.dark .text-muted {
+  color: hsl(var(--muted-foreground)) !important;
+  opacity: 0.95;
 }

@@ -1,29 +1,37 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Clock, MapPin, CheckCircle, XCircle, Users, AlertTriangle, Activity } from "lucide-react"
+import { useState, useEffect } from "react";
+import {
+  Clock,
+  MapPin,
+  CheckCircle,
+  XCircle,
+  Users,
+  AlertTriangle,
+  Activity,
+} from "lucide-react";
 
 interface TimetableEntry {
-  timeSlot: string
-  hall: string
-  courseCode: string
-  lecturer: string
-  subject?: string
-  students?: number
-  type?: "lecture" | "lab" | "tutorial"
+  timeSlot: string;
+  hall: string;
+  courseCode: string;
+  lecturer: string;
+  subject?: string;
+  students?: number;
+  type?: "lecture" | "lab" | "tutorial";
 }
 
 interface WeeklyTimetable {
-  [key: string]: TimetableEntry[]
+  [key: string]: TimetableEntry[];
 }
 
 interface HallAvailability {
-  hall: string
-  status: "available" | "occupied" | "upcoming"
-  currentClass?: TimetableEntry
-  nextClass?: TimetableEntry
-  availableSlots: string[]
-  occupiedSlots: string[]
+  hall: string;
+  status: "available" | "occupied" | "upcoming";
+  currentClass?: TimetableEntry;
+  nextClass?: TimetableEntry;
+  availableSlots: string[];
+  occupiedSlots: string[];
 }
 
 const TIME_SLOTS = [
@@ -37,111 +45,135 @@ const TIME_SLOTS = [
   "15:00-16:00",
   "16:00-17:00",
   "17:00-18:00",
-]
+];
 
-const ALL_HALLS = ["SCLT1", "SCLT2", "SCA", "Lab1", "Lab2", "DSLab", "SCTR"]
-const WORKING_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+const ALL_HALLS = ["SCLT1", "SCLT2", "SCA", "Lab1", "Lab2", "DSLab", "SCTR"];
+const WORKING_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 export default function AvailableHallsScreen() {
-  const [weeklyTimetable, setWeeklyTimetable] = useState<WeeklyTimetable>({})
-  const [currentTime, setCurrentTime] = useState(new Date())
-  const [selectedDay, setSelectedDay] = useState<string>("")
-  const [hallsAvailability, setHallsAvailability] = useState<HallAvailability[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [weeklyTimetable, setWeeklyTimetable] = useState<WeeklyTimetable>({});
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [selectedDay, setSelectedDay] = useState<string>("");
+  const [hallsAvailability, setHallsAvailability] = useState<
+    HallAvailability[]
+  >([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Load timetable data from localStorage
-    const savedWeeklyTimetable = localStorage.getItem("weeklyTimetable")
+    const savedWeeklyTimetable = localStorage.getItem("weeklyTimetable");
     if (savedWeeklyTimetable) {
-      setWeeklyTimetable(JSON.parse(savedWeeklyTimetable))
+      setWeeklyTimetable(JSON.parse(savedWeeklyTimetable));
     }
-    setIsLoading(false)
-  }, [])
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
-    if (isLoading) return
+    if (isLoading) return;
 
     // Auto-detect current working day
-    const today = getCurrentDay()
-    const currentWorkingDay = WORKING_DAYS.includes(today) ? today : "Monday"
-    setSelectedDay(currentWorkingDay)
+    const today = getCurrentDay();
+    const currentWorkingDay = WORKING_DAYS.includes(today) ? today : "Monday";
+    setSelectedDay(currentWorkingDay);
 
     const timer = setInterval(() => {
-      setCurrentTime(new Date())
+      setCurrentTime(new Date());
       // Update selected day if day changes
-      const newDay = getCurrentDay()
-      const newWorkingDay = WORKING_DAYS.includes(newDay) ? newDay : "Monday"
-      setSelectedDay(newWorkingDay)
-    }, 60000)
+      const newDay = getCurrentDay();
+      const newWorkingDay = WORKING_DAYS.includes(newDay) ? newDay : "Monday";
+      setSelectedDay(newWorkingDay);
+    }, 60000);
 
     return () => {
-      clearInterval(timer)
-    }
-  }, [isLoading])
+      clearInterval(timer);
+    };
+  }, [isLoading]);
 
   useEffect(() => {
     if (selectedDay && weeklyTimetable[selectedDay]) {
-      calculateHallsAvailability()
+      calculateHallsAvailability();
     }
-  }, [selectedDay, weeklyTimetable, currentTime])
+  }, [selectedDay, weeklyTimetable, currentTime]);
 
   const getCurrentDay = () => {
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    return days[new Date().getDay()]
-  }
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    return days[new Date().getDay()];
+  };
 
   const getCurrentTimeSlot = () => {
-    const now = new Date()
-    const currentHour = now.getHours()
-    const currentMinute = now.getMinutes()
-    const currentTimeInMinutes = currentHour * 60 + currentMinute
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentTimeInMinutes = currentHour * 60 + currentMinute;
 
     for (const slot of TIME_SLOTS) {
-      const [start, end] = slot.split("-")
-      const [startHour, startMinute] = start.split(":").map(Number)
-      const [endHour, endMinute] = end.split(":").map(Number)
+      const [start, end] = slot.split("-");
+      const [startHour, startMinute] = start.split(":").map(Number);
+      const [endHour, endMinute] = end.split(":").map(Number);
 
-      const startTimeInMinutes = startHour * 60 + startMinute
-      const endTimeInMinutes = endHour * 60 + endMinute
+      const startTimeInMinutes = startHour * 60 + startMinute;
+      const endTimeInMinutes = endHour * 60 + endMinute;
 
-      if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < endTimeInMinutes) {
-        return slot
+      if (
+        currentTimeInMinutes >= startTimeInMinutes &&
+        currentTimeInMinutes < endTimeInMinutes
+      ) {
+        return slot;
       }
     }
-    return null
-  }
+    return null;
+  };
 
   const calculateHallsAvailability = () => {
-    const currentTimeSlot = getCurrentTimeSlot()
-    const isToday = selectedDay === getCurrentDay()
-    const dayTimetable = weeklyTimetable[selectedDay] || []
+    const currentTimeSlot = getCurrentTimeSlot();
+    const isToday = selectedDay === getCurrentDay();
+    const dayTimetable = weeklyTimetable[selectedDay] || [];
 
     const availability: HallAvailability[] = ALL_HALLS.map((hall) => {
-      const hallClasses = dayTimetable.filter((entry) => entry.hall === hall)
-      const occupiedSlots = hallClasses.map((entry) => entry.timeSlot)
-      const availableSlots = TIME_SLOTS.filter((slot) => !occupiedSlots.includes(slot))
+      const hallClasses = dayTimetable.filter((entry) => entry.hall === hall);
+      const occupiedSlots = hallClasses.map((entry) => entry.timeSlot);
+      const availableSlots = TIME_SLOTS.filter(
+        (slot) => !occupiedSlots.includes(slot)
+      );
 
       // Find current class
-      const currentClass = hallClasses.find((entry) => entry.timeSlot === currentTimeSlot)
+      const currentClass = hallClasses.find(
+        (entry) => entry.timeSlot === currentTimeSlot
+      );
 
       // Find next class
       const nextClass = hallClasses
         .filter((entry) => {
-          if (!currentTimeSlot) return true
-          return TIME_SLOTS.indexOf(entry.timeSlot) > TIME_SLOTS.indexOf(currentTimeSlot)
+          if (!currentTimeSlot) return true;
+          return (
+            TIME_SLOTS.indexOf(entry.timeSlot) >
+            TIME_SLOTS.indexOf(currentTimeSlot)
+          );
         })
-        .sort((a, b) => TIME_SLOTS.indexOf(a.timeSlot) - TIME_SLOTS.indexOf(b.timeSlot))[0]
+        .sort(
+          (a, b) =>
+            TIME_SLOTS.indexOf(a.timeSlot) - TIME_SLOTS.indexOf(b.timeSlot)
+        )[0];
 
       // Determine status
-      let status: "available" | "occupied" | "upcoming" = "available"
+      let status: "available" | "occupied" | "upcoming" = "available";
       if (isToday && currentClass) {
-        status = "occupied"
+        status = "occupied";
       } else if (
         isToday &&
         nextClass &&
-        TIME_SLOTS.indexOf(nextClass.timeSlot) === TIME_SLOTS.indexOf(currentTimeSlot || "") + 1
+        TIME_SLOTS.indexOf(nextClass.timeSlot) ===
+          TIME_SLOTS.indexOf(currentTimeSlot || "") + 1
       ) {
-        status = "upcoming"
+        status = "upcoming";
       }
 
       return {
@@ -151,101 +183,109 @@ export default function AvailableHallsScreen() {
         nextClass,
         availableSlots,
         occupiedSlots,
-      }
-    })
+      };
+    });
 
-    setHallsAvailability(availability)
-  }
+    setHallsAvailability(availability);
+  };
 
   const getStatusBackground = (status: string) => {
     switch (status) {
       case "available":
-        return "bg-gradient-to-br from-green-500/30 to-green-600/20"
+        return "bg-gradient-to-br from-green-500/30 to-green-600/20";
       case "occupied":
-        return "bg-gradient-to-br from-red-500/30 to-red-600/20"
+        return "bg-gradient-to-br from-red-500/30 to-red-600/20";
       case "upcoming":
-        return "bg-gradient-to-br from-[#f59e0b]/30 to-[#d97706]/20"
+        return "bg-gradient-to-br from-[#FF9900]/30 to-[#FF9900]/20";
       default:
-        return "bg-gradient-to-br from-gray-500/30 to-gray-600/20"
+        return "bg-gradient-to-br from-gray-500/30 to-gray-600/20";
     }
-  }
+  };
 
   const getStatusBorder = (status: string) => {
     switch (status) {
       case "available":
-        return "border-green-500/40"
+        return "border-green-500/40";
       case "occupied":
-        return "border-red-500/40"
+        return "border-red-500/40";
       case "upcoming":
-        return "border-[#f59e0b]/40"
+        return "border-[#FF9900]/40";
       default:
-        return "border-gray-500/40"
+        return "border-gray-500/40";
     }
-  }
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "available":
-        return <CheckCircle className="w-8 h-8 text-green-400" />
+        return <CheckCircle className="w-8 h-8 text-green-400" />;
       case "occupied":
-        return <XCircle className="w-8 h-8 text-red-400" />
+        return <XCircle className="w-8 h-8 text-red-400" />;
       case "upcoming":
-        return <AlertTriangle className="w-8 h-8 text-[#f59e0b]" />
+        return <AlertTriangle className="w-8 h-8 text-[#FF9900]" />;
       default:
-        return <MapPin className="w-8 h-8 text-white/60" />
+        return <MapPin className="w-8 h-8 text-white/60" />;
     }
-  }
+  };
 
   const getStatusText = (status: string) => {
     switch (status) {
       case "available":
-        return "AVAILABLE"
+        return "AVAILABLE";
       case "occupied":
-        return "OCCUPIED"
+        return "OCCUPIED";
       case "upcoming":
-        return "NEXT CLASS"
+        return "NEXT CLASS";
       default:
-        return "UNKNOWN"
+        return "UNKNOWN";
     }
-  }
+  };
 
   const getStatusTextColor = (status: string) => {
     switch (status) {
       case "available":
-        return "text-green-400"
+        return "text-green-400";
       case "occupied":
-        return "text-red-400"
+        return "text-red-400";
       case "upcoming":
-        return "text-[#f59e0b]"
+        return "text-[#FF9900]";
       default:
-        return "text-white/60"
+        return "text-white/60";
     }
-  }
+  };
 
-  const availableHalls = hallsAvailability.filter((hall) => hall.status === "available").length
-  const occupiedHalls = hallsAvailability.filter((hall) => hall.status === "occupied").length
-  const upcomingHalls = hallsAvailability.filter((hall) => hall.status === "upcoming").length
-  const isToday = selectedDay === getCurrentDay()
+  const availableHalls = hallsAvailability.filter(
+    (hall) => hall.status === "available"
+  ).length;
+  const occupiedHalls = hallsAvailability.filter(
+    (hall) => hall.status === "occupied"
+  ).length;
+  const upcomingHalls = hallsAvailability.filter(
+    (hall) => hall.status === "upcoming"
+  ).length;
+  const isToday = selectedDay === getCurrentDay();
 
   if (isLoading) {
     return (
-      <div className="h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] text-white overflow-hidden flex items-center justify-center">
+      <div className="h-screen bg-gradient-to-br from-[#080808] via-[#0099FF] to-[#0099FF] text-white overflow-hidden flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#f59e0b] mx-auto mb-4"></div>
-          <h2 className="text-2xl font-bold text-[#f59e0b] mb-2">Loading Hall Status</h2>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#FF9900] mx-auto mb-4"></div>
+          <h2 className="text-2xl font-bold text-[#FF9900] mb-2">
+            Loading Hall Status
+          </h2>
           <p className="text-white/80">Checking availability...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] text-white overflow-hidden relative">
+    <div className="h-screen bg-gradient-to-br from-[#080808] via-[#0099FF] to-[#0099FF] text-white overflow-hidden relative">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-[#f59e0b]/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-20 left-20 w-72 h-72 bg-[#FF9900]/5 rounded-full blur-3xl animate-pulse"></div>
         <div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-[#3b82f6]/10 rounded-full blur-3xl animate-pulse"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-[#0099FF]/10 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "2s" }}
         ></div>
       </div>
@@ -255,7 +295,7 @@ export default function AvailableHallsScreen() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#f59e0b] to-[#d97706] rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#FF9900] to-[#FF9900] rounded-xl flex items-center justify-center">
                 <Activity className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -278,15 +318,21 @@ export default function AvailableHallsScreen() {
             {/* Live Statistics */}
             <div className="flex items-center gap-4">
               <div className="text-center bg-green-500/20 px-4 py-3 rounded-xl border border-green-500/30">
-                <div className="text-2xl font-bold text-green-400">{availableHalls}</div>
+                <div className="text-2xl font-bold text-green-400">
+                  {availableHalls}
+                </div>
                 <div className="text-xs text-green-400/80">Available</div>
               </div>
               <div className="text-center bg-red-500/20 px-4 py-3 rounded-xl border border-red-500/30">
-                <div className="text-2xl font-bold text-red-400">{occupiedHalls}</div>
+                <div className="text-2xl font-bold text-red-400">
+                  {occupiedHalls}
+                </div>
                 <div className="text-xs text-red-400/80">Occupied</div>
               </div>
               <div className="text-center bg-[#f59e0b]/20 px-4 py-3 rounded-xl border border-[#f59e0b]/30">
-                <div className="text-2xl font-bold text-[#f59e0b]">{upcomingHalls}</div>
+                <div className="text-2xl font-bold text-[#f59e0b]">
+                  {upcomingHalls}
+                </div>
                 <div className="text-xs text-[#f59e0b]/80">Upcoming</div>
               </div>
             </div>
@@ -315,7 +361,9 @@ export default function AvailableHallsScreen() {
               <div
                 key={hallInfo.hall}
                 className={`
-                  ${getStatusBackground(hallInfo.status)} ${getStatusBorder(hallInfo.status)}
+                  ${getStatusBackground(hallInfo.status)} ${getStatusBorder(
+                  hallInfo.status
+                )}
                   bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border-2 overflow-hidden
                   transform transition-all duration-500 flex flex-col hover:scale-105
                 `}
@@ -330,19 +378,27 @@ export default function AvailableHallsScreen() {
                       <div className="w-10 h-10 bg-gradient-to-br from-[#f59e0b] to-[#d97706] rounded-xl flex items-center justify-center">
                         <MapPin className="w-5 h-5 text-white" />
                       </div>
-                      <h2 className="text-2xl font-bold text-white">{hallInfo.hall}</h2>
+                      <h2 className="text-2xl font-bold text-white">
+                        {hallInfo.hall}
+                      </h2>
                     </div>
                     {isToday && (
                       <div className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full">
                         <div className="w-2 h-2 bg-[#f59e0b] rounded-full animate-pulse"></div>
-                        <span className="text-[#f59e0b] text-xs font-medium">LIVE</span>
+                        <span className="text-[#f59e0b] text-xs font-medium">
+                          LIVE
+                        </span>
                       </div>
                     )}
                   </div>
 
-                  <div className="flex items-center justify-center mb-2">{getStatusIcon(hallInfo.status)}</div>
+                  <div className="flex items-center justify-center mb-2">
+                    {getStatusIcon(hallInfo.status)}
+                  </div>
                   <div
-                    className={`text-lg font-bold tracking-wider text-center ${getStatusTextColor(hallInfo.status)}`}
+                    className={`text-lg font-bold tracking-wider text-center ${getStatusTextColor(
+                      hallInfo.status
+                    )}`}
                   >
                     {getStatusText(hallInfo.status)}
                   </div>
@@ -352,33 +408,55 @@ export default function AvailableHallsScreen() {
                 <div className="flex-1 p-4 flex flex-col justify-center">
                   {isToday && hallInfo.currentClass ? (
                     <div className="text-center text-white space-y-2">
-                      <div className="text-sm font-bold text-[#f59e0b] mb-2">CURRENT CLASS</div>
+                      <div className="text-sm font-bold text-[#f59e0b] mb-2">
+                        CURRENT CLASS
+                      </div>
                       <div className="bg-white/10 rounded-xl p-3 border border-white/20">
-                        <div className="text-lg font-bold mb-1">{hallInfo.currentClass.courseCode}</div>
-                        <div className="text-sm opacity-90 mb-2 line-clamp-2">{hallInfo.currentClass.subject}</div>
+                        <div className="text-lg font-bold mb-1">
+                          {hallInfo.currentClass.courseCode}
+                        </div>
+                        <div className="text-sm opacity-90 mb-2 line-clamp-2">
+                          {hallInfo.currentClass.subject}
+                        </div>
                         <div className="text-xs opacity-80 flex items-center justify-center gap-1">
                           <Users className="w-3 h-3" />
-                          <span className="line-clamp-1">{hallInfo.currentClass.lecturer}</span>
+                          <span className="line-clamp-1">
+                            {hallInfo.currentClass.lecturer}
+                          </span>
                         </div>
                       </div>
                     </div>
                   ) : isToday && hallInfo.nextClass ? (
                     <div className="text-center text-white space-y-2">
-                      <div className="text-sm font-bold text-[#f59e0b] mb-2">NEXT CLASS</div>
+                      <div className="text-sm font-bold text-[#f59e0b] mb-2">
+                        NEXT CLASS
+                      </div>
                       <div className="bg-white/10 rounded-xl p-3 border border-white/20">
-                        <div className="text-base font-bold mb-1">{hallInfo.nextClass.timeSlot}</div>
-                        <div className="text-sm font-semibold mb-1">{hallInfo.nextClass.courseCode}</div>
-                        <div className="text-xs opacity-80 line-clamp-1">{hallInfo.nextClass.lecturer}</div>
+                        <div className="text-base font-bold mb-1">
+                          {hallInfo.nextClass.timeSlot}
+                        </div>
+                        <div className="text-sm font-semibold mb-1">
+                          {hallInfo.nextClass.courseCode}
+                        </div>
+                        <div className="text-xs opacity-80 line-clamp-1">
+                          {hallInfo.nextClass.lecturer}
+                        </div>
                       </div>
                     </div>
                   ) : (
                     <div className="text-center text-white space-y-3">
                       <div className="text-sm font-bold text-[#f59e0b] mb-2">
-                        {hallInfo.status === "available" ? "FREE SLOTS" : "NO CLASSES"}
+                        {hallInfo.status === "available"
+                          ? "FREE SLOTS"
+                          : "NO CLASSES"}
                       </div>
                       <div className="bg-white/10 rounded-xl p-4 border border-white/20">
-                        <div className="text-3xl font-bold opacity-80 mb-1">{hallInfo.availableSlots.length}</div>
-                        <div className="text-xs opacity-80">OF {TIME_SLOTS.length} SLOTS</div>
+                        <div className="text-3xl font-bold opacity-80 mb-1">
+                          {hallInfo.availableSlots.length}
+                        </div>
+                        <div className="text-xs opacity-80">
+                          OF {TIME_SLOTS.length} SLOTS
+                        </div>
                       </div>
                     </div>
                   )}
@@ -393,20 +471,24 @@ export default function AvailableHallsScreen() {
                           hallInfo.status === "available"
                             ? "bg-green-400"
                             : hallInfo.status === "occupied"
-                              ? "bg-red-400"
-                              : "bg-[#f59e0b]"
+                            ? "bg-red-400"
+                            : "bg-[#f59e0b]"
                         }`}
                       ></div>
                       <span className="font-medium">
                         {hallInfo.status === "available"
                           ? "Ready to use"
                           : hallInfo.status === "occupied"
-                            ? "In session"
-                            : "Starting soon"}
+                          ? "In session"
+                          : "Starting soon"}
                       </span>
                     </div>
                     <div className="font-bold text-[#f59e0b]">
-                      {Math.round((hallInfo.availableSlots.length / TIME_SLOTS.length) * 100)}% FREE
+                      {Math.round(
+                        (hallInfo.availableSlots.length / TIME_SLOTS.length) *
+                          100
+                      )}
+                      % FREE
                     </div>
                   </div>
                 </div>
@@ -421,7 +503,9 @@ export default function AvailableHallsScreen() {
                 <div
                   key={hallInfo.hall}
                   className={`
-                    ${getStatusBackground(hallInfo.status)} ${getStatusBorder(hallInfo.status)}
+                    ${getStatusBackground(hallInfo.status)} ${getStatusBorder(
+                    hallInfo.status
+                  )}
                     bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border-2 overflow-hidden
                     transform transition-all duration-500 flex flex-col hover:scale-105
                   `}
@@ -436,19 +520,27 @@ export default function AvailableHallsScreen() {
                         <div className="w-10 h-10 bg-gradient-to-br from-[#f59e0b] to-[#d97706] rounded-xl flex items-center justify-center">
                           <MapPin className="w-5 h-5 text-white" />
                         </div>
-                        <h2 className="text-2xl font-bold text-white">{hallInfo.hall}</h2>
+                        <h2 className="text-2xl font-bold text-white">
+                          {hallInfo.hall}
+                        </h2>
                       </div>
                       {isToday && (
                         <div className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full">
                           <div className="w-2 h-2 bg-[#f59e0b] rounded-full animate-pulse"></div>
-                          <span className="text-[#f59e0b] text-xs font-medium">LIVE</span>
+                          <span className="text-[#f59e0b] text-xs font-medium">
+                            LIVE
+                          </span>
                         </div>
                       )}
                     </div>
 
-                    <div className="flex items-center justify-center mb-2">{getStatusIcon(hallInfo.status)}</div>
+                    <div className="flex items-center justify-center mb-2">
+                      {getStatusIcon(hallInfo.status)}
+                    </div>
                     <div
-                      className={`text-lg font-bold tracking-wider text-center ${getStatusTextColor(hallInfo.status)}`}
+                      className={`text-lg font-bold tracking-wider text-center ${getStatusTextColor(
+                        hallInfo.status
+                      )}`}
                     >
                       {getStatusText(hallInfo.status)}
                     </div>
@@ -458,33 +550,55 @@ export default function AvailableHallsScreen() {
                   <div className="flex-1 p-4 flex flex-col justify-center">
                     {isToday && hallInfo.currentClass ? (
                       <div className="text-center text-white space-y-2">
-                        <div className="text-sm font-bold text-[#f59e0b] mb-2">CURRENT CLASS</div>
+                        <div className="text-sm font-bold text-[#f59e0b] mb-2">
+                          CURRENT CLASS
+                        </div>
                         <div className="bg-white/10 rounded-xl p-3 border border-white/20">
-                          <div className="text-lg font-bold mb-1">{hallInfo.currentClass.courseCode}</div>
-                          <div className="text-sm opacity-90 mb-2 line-clamp-2">{hallInfo.currentClass.subject}</div>
+                          <div className="text-lg font-bold mb-1">
+                            {hallInfo.currentClass.courseCode}
+                          </div>
+                          <div className="text-sm opacity-90 mb-2 line-clamp-2">
+                            {hallInfo.currentClass.subject}
+                          </div>
                           <div className="text-xs opacity-80 flex items-center justify-center gap-1">
                             <Users className="w-3 h-3" />
-                            <span className="line-clamp-1">{hallInfo.currentClass.lecturer}</span>
+                            <span className="line-clamp-1">
+                              {hallInfo.currentClass.lecturer}
+                            </span>
                           </div>
                         </div>
                       </div>
                     ) : isToday && hallInfo.nextClass ? (
                       <div className="text-center text-white space-y-2">
-                        <div className="text-sm font-bold text-[#f59e0b] mb-2">NEXT CLASS</div>
+                        <div className="text-sm font-bold text-[#f59e0b] mb-2">
+                          NEXT CLASS
+                        </div>
                         <div className="bg-white/10 rounded-xl p-3 border border-white/20">
-                          <div className="text-base font-bold mb-1">{hallInfo.nextClass.timeSlot}</div>
-                          <div className="text-sm font-semibold mb-1">{hallInfo.nextClass.courseCode}</div>
-                          <div className="text-xs opacity-80 line-clamp-1">{hallInfo.nextClass.lecturer}</div>
+                          <div className="text-base font-bold mb-1">
+                            {hallInfo.nextClass.timeSlot}
+                          </div>
+                          <div className="text-sm font-semibold mb-1">
+                            {hallInfo.nextClass.courseCode}
+                          </div>
+                          <div className="text-xs opacity-80 line-clamp-1">
+                            {hallInfo.nextClass.lecturer}
+                          </div>
                         </div>
                       </div>
                     ) : (
                       <div className="text-center text-white space-y-3">
                         <div className="text-sm font-bold text-[#f59e0b] mb-2">
-                          {hallInfo.status === "available" ? "FREE SLOTS" : "NO CLASSES"}
+                          {hallInfo.status === "available"
+                            ? "FREE SLOTS"
+                            : "NO CLASSES"}
                         </div>
                         <div className="bg-white/10 rounded-xl p-4 border border-white/20">
-                          <div className="text-3xl font-bold opacity-80 mb-1">{hallInfo.availableSlots.length}</div>
-                          <div className="text-xs opacity-80">OF {TIME_SLOTS.length} SLOTS</div>
+                          <div className="text-3xl font-bold opacity-80 mb-1">
+                            {hallInfo.availableSlots.length}
+                          </div>
+                          <div className="text-xs opacity-80">
+                            OF {TIME_SLOTS.length} SLOTS
+                          </div>
                         </div>
                       </div>
                     )}
@@ -499,20 +613,24 @@ export default function AvailableHallsScreen() {
                             hallInfo.status === "available"
                               ? "bg-green-400"
                               : hallInfo.status === "occupied"
-                                ? "bg-red-400"
-                                : "bg-[#f59e0b]"
+                              ? "bg-red-400"
+                              : "bg-[#f59e0b]"
                           }`}
                         ></div>
                         <span className="font-medium">
                           {hallInfo.status === "available"
                             ? "Ready to use"
                             : hallInfo.status === "occupied"
-                              ? "In session"
-                              : "Starting soon"}
+                            ? "In session"
+                            : "Starting soon"}
                         </span>
                       </div>
                       <div className="font-bold text-[#f59e0b]">
-                        {Math.round((hallInfo.availableSlots.length / TIME_SLOTS.length) * 100)}% FREE
+                        {Math.round(
+                          (hallInfo.availableSlots.length / TIME_SLOTS.length) *
+                            100
+                        )}
+                        % FREE
                       </div>
                     </div>
                   </div>
@@ -523,5 +641,5 @@ export default function AvailableHallsScreen() {
         </div>
       </div>
     </div>
-  )
+  );
 }

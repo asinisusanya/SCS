@@ -403,7 +403,7 @@ export default function WelcomeScreen() {
           </div>
 
           {/* Recent Achievements Carousel */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20">
+          {/* <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20">
             <h3 className="text-xl font-bold text-[#f59e0b] mb-4 flex items-center gap-2">
               <Star className="w-6 h-6" />
               Recent Achievements
@@ -444,10 +444,10 @@ export default function WelcomeScreen() {
                 </div>
               </div>
             </div>
-          </div>
+          </div>*/}
 
           {/* Enhanced Today's Status */}
-          <div className="bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-sm rounded-2xl p-6 shadow-2xl border-2 border-[#f59e0b]/30">
+          {/*<div className="bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-sm rounded-2xl p-6 shadow-2xl border-2 border-[#f59e0b]/30">
             <h3 className="text-xl font-bold text-[#f59e0b] mb-4 flex items-center gap-2">
               <Clock className="w-6 h-6" />
               Campus Status
@@ -477,10 +477,10 @@ export default function WelcomeScreen() {
                 <span className="text-lg font-bold text-[#f59e0b]">Open</span>
               </div>
             </div>
-          </div>
+          </div>*/}
 
           {/* Quick Access */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20">
+          {/*<div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20">
             <h3 className="text-xl font-bold text-[#f59e0b] mb-4 flex items-center gap-2">
               <MapPin className="w-6 h-6" />
               Quick Access
@@ -499,7 +499,7 @@ export default function WelcomeScreen() {
                 </div>
               </button>
             </div>
-          </div>
+          </div>*/}
         </div>
       </div>
     </div>
